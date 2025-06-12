@@ -1,23 +1,18 @@
 {
   "todos": [
     {
-      "id": "1",
-      "title": "My First Todo",
-      "completed": false
-    },
-    {
-      "id": "2",
-      "title": "My Second Todo",
-      "completed": false
-    },
-    {
-      "id": 0.6539279712034521,
-      "title": "fafaefef",
-      "completed": false
-    },
-    {
-      "id": 0.9717791757872832,
+      "id": 1,
       "title": "fasdfefegrg",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "new one",
+      "completed": false
+    },
+    {
+      "id": 0.5231366408515118,
+      "title": "fsdfsd",
       "completed": false
     }
   ]

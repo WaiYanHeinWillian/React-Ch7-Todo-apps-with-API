@@ -24,7 +24,7 @@ function App() {
     fetch('http://localhost:3001/todos',{
       method:"POST",
       headers:{
-        "Content-Type":"application/json",
+        "Content-Type":"application/json"
       },
       body:JSON.stringify(todo)
     })
@@ -33,6 +33,21 @@ function App() {
     setTodos(preData=>[...preData,todo])
   };
 
+  let deleteTodo=(todoId)=>{
+    console.log("http://localhost:3001/todos/${todoId}")
+    //server
+    fetch(`http://localhost:3001/todos/${todoId}`,{
+      method:"DELETE"
+    })
+    
+    //client    
+    setTodos(preState=>{
+      return preState.filter(todo=>{
+        return todo.id!=todoId
+      })
+    })
+  }
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
@@ -40,7 +55,7 @@ function App() {
 
         <TodoForm addTodo={addTodo}/>
 
-        <TodoList todos={todos}/>
+        <TodoList todos={todos} deleteTodo={deleteTodo}/>
 
         <CheckAllAndRemaining/>
 
