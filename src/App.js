@@ -86,6 +86,22 @@ function App() {
     })
   }
 
+  let ClearCompleted=()=>{
+    //server
+    todos.forEach((t)=>{
+      if(t.completed){
+        deleteTodo(t.id);
+      }
+    })
+
+    //client
+    setTodos(preState=>{
+      preState.filter(t=>{
+        return !t.completed
+      })
+    })
+  }
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
@@ -99,9 +115,7 @@ function App() {
 
         <div className="other-buttons-container">
         <TodoFilters/>
-
-        <ClearCompletedBtn/>
-          
+        <ClearCompletedBtn ClearCompleted={ClearCompleted}/>
         </div>
       </div>
     </div>
