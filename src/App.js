@@ -69,6 +69,23 @@ function App() {
     })
   }
 
+  let remainingCount=todos.filter((t)=>!t.completed).length;
+
+  let checkAll=()=>{
+    //server
+    todos.forEach((t)=>{
+      t.completed=true;
+      updateTodo(t);
+    })
+
+    //client
+    setTodos(preState=>{
+      return preState.map(t=>{
+        return {...t,completed:true}
+      })
+    })
+  }
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
@@ -78,7 +95,7 @@ function App() {
 
         <TodoList todos={todos} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
 
-        <CheckAllAndRemaining/>
+        <CheckAllAndRemaining remainingCount={remainingCount} checkAll={checkAll}/>
 
         <div className="other-buttons-container">
         <TodoFilters/>
