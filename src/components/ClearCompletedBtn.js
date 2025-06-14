@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function ClearCompletedBtn(ClearCompletedBtn) {
+export default function ClearCompletedBtn({ClearCompleted}) {
+  
   return (
             <div>
-                <button className="button" onClick={ClearCompletedBtn}>Clear completed</button>
+                <button className="button" onClick={ClearCompleted}>Clear completed</button>
             </div>
   )
 }

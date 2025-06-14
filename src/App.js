@@ -4,20 +4,35 @@ import TodoForm from "./components/TodoForm.js"
 import TodoList from "./components/TodoList.js"
 import CheckAllAndRemaining from "./components/CheckAllAndRemaining.js"
 import TodoFilters from "./components/TodoFilters.js"
-import ClearCompletedBtn from "./components/TodoFilters.js"
-import { useEffect, useState } from 'react';
+import ClearCompletedBtn from "./components/ClearCompletedBtn.js"
+import { useCallback, useEffect, useState } from 'react';
 
 function App() {
 
   let [todos,setTodos]=useState([]);
+  let [filteredTodos,setFilteredTodos]=useState(todos);
 
   useEffect(()=>{
     fetch('http://localhost:3001/todos')
     .then(res=>res.json())
     .then((todos)=>{
       setTodos(todos);
+      setFilteredTodos(todos);
     })
   },[])
+
+  let filterBy=useCallback(
+        (filter)=>{
+        if (filter=="All"){
+          setFilteredTodos(todos);
+        }
+        if (filter=="Active"){
+          setFilteredTodos(todos.filter(t=>!t.completed))
+        }
+        if (filter=="Completed"){
+          setFilteredTodos(todos.filter(t=>t.completed))
+        }
+      },[todos])
 
   let addTodo=(todo)=>{
     // update data at server side
@@ -69,15 +84,14 @@ function App() {
     })
   }
 
-  let remainingCount=todos.filter((t)=>!t.completed).length;
-
+  
   let checkAll=()=>{
     //server
     todos.forEach((t)=>{
       t.completed=true;
       updateTodo(t);
     })
-
+    
     //client
     setTodos(preState=>{
       return preState.map(t=>{
@@ -85,7 +99,7 @@ function App() {
       })
     })
   }
-
+  
   let ClearCompleted=()=>{
     //server
     todos.forEach((t)=>{
@@ -93,15 +107,15 @@ function App() {
         deleteTodo(t.id);
       }
     })
-
+    
     //client
-    setTodos(preState=>{
-      preState.filter(t=>{
-        return !t.completed
-      })
+    setTodos((preState)=>{
+      return preState.filter(t=>!t.completed)
     })
   }
 
+  let remainingCount=todos.filter((t)=>!t.completed).length;
+  
   return (
     <div className="todo-app-container">
       <div className="todo-app">
@@ -109,12 +123,12 @@ function App() {
 
         <TodoForm addTodo={addTodo}/>
 
-        <TodoList todos={todos} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
+        <TodoList todos={filteredTodos} deleteTodo={deleteTodo} updateTodo={updateTodo}/>
 
         <CheckAllAndRemaining remainingCount={remainingCount} checkAll={checkAll}/>
 
         <div className="other-buttons-container">
-        <TodoFilters/>
+        <TodoFilters filterBy={filterBy}/>
         <ClearCompletedBtn ClearCompleted={ClearCompleted}/>
         </div>
       </div>
